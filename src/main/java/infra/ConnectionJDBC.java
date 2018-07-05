@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author Andressa
  */
-public interface ConexaoJDBC {
+public interface ConnectionJDBC {
     
     public Connection getConnection();
     

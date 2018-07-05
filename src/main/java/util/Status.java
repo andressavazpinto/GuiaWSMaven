@@ -10,5 +10,5 @@ package util;
  * @author Andressa
  */
 public enum Status {
-    Ativo, Denunciado, Inativo
+    Active, Reported, Inactive
 }

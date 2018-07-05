@@ -15,11 +15,11 @@ import java.util.logging.Logger;
  *
  * @author Andressa
  */
-public class ConexaoMySQLJDBC implements ConexaoJDBC {
+public class ConnectionMySQLJDBC implements ConnectionJDBC {
     
     Connection connection = null;
     
-    public ConexaoMySQLJDBC() throws SQLException, ClassNotFoundException {    
+    public ConnectionMySQLJDBC() throws SQLException, ClassNotFoundException {    
          Class.forName("com.mysql.jdbc.Driver");
       
          this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Guia", "root", "9114115693532601");
@@ -37,7 +37,7 @@ public class ConexaoMySQLJDBC implements ConexaoJDBC {
             try {
                 this.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConexaoMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConnectionMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
             }
         }        
     }
@@ -54,7 +54,7 @@ public class ConexaoMySQLJDBC implements ConexaoJDBC {
             try {
                 this.connection.rollback();
             } catch (SQLException ex) {
-                Logger.getLogger(ConexaoMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConnectionMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 this.close();
             }

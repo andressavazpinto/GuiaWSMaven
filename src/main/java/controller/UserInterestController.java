@@ -14,6 +14,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,12 +28,12 @@ import model.UserInterest;
  * @author Andressa
  */
 
-@Path("users/interests")
+@Path("users/interests/")
 public class UserInterestController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)   
-    @Path("/")
+    @Path("")
     public List<UserInterest> list() throws ClassNotFoundException, SQLException {                     
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
@@ -45,12 +46,12 @@ public class UserInterestController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/")
-    public Response insert(UserInterest userinterest) throws ClassNotFoundException {
+    @Path("")
+    public int /*Response*/ insertUserInterests(List<UserInterest> userinterest) throws ClassNotFoundException {
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
-            userInterestDAO.insert(userinterest);
-            return Response.status(Response.Status.OK).build();
+            userInterestDAO.insertUserInterests(userinterest);
+            return 1;//Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -58,8 +59,8 @@ public class UserInterestController {
     }
     
     @DELETE       
-    @Path("/{id}")
-    public Response deleteUserInt(@PathParam("id") Integer id) throws ClassNotFoundException {        
+    @Path("{id}")
+    public Response delete(@PathParam("id") Integer id) throws ClassNotFoundException {        
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
             userInterestDAO.delete(id);
@@ -68,5 +69,32 @@ public class UserInterestController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
-    }  
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{idUser}")
+    public List<UserInterest> get(@PathParam("idUser") int idUser) throws ClassNotFoundException {        
+        try {
+            UserInterestDAO userInterestDAO = new UserInterestDAO();
+            return userInterestDAO.listByUser(idUser);
+        } catch(SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)    
+    @Path("{idUser}")
+    public void update(@PathParam("idUser") int idUser, List<UserInterest> userinterest) throws ClassNotFoundException {        
+        try {
+            UserInterestDAO userInterestDAO = new UserInterestDAO();
+            userInterestDAO.update(idUser, userinterest);
+            //return Response.status(Response.Status.OK).build();
+        } catch(SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }   
+    }
 }

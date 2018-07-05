@@ -19,5 +19,4 @@ public class MyApplication extends ResourceConfig {
     public MyApplication() {
         packages("controller");
     }   
-    
 }

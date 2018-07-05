@@ -64,31 +64,60 @@ public class UserDAO {
     public User update(User user) throws SQLException, ClassNotFoundException {
         User u = new User();
         String sqlQuery = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
-                + "email = ?, password = ?, localization = ? WHERE idUser = ?;";               
+                + "email = ?, password = ?, localization = ? WHERE idUser = ?;";
         
-        try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+        String sqlQuery2 = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
+                + "email = ?, localization = ? WHERE idUser = ?;";
+        
+        if(user.getPassword() == null ) {
+            try {
+                PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery2);
             
-            stmt.setString(1, user.getName());
-            stmt.setString(2, user.getDateOfBirth());
-            stmt.setString(3, user.getLanguage());
-            stmt.setString(4, user.getOccupation());
-            stmt.setString(5, user.getEmail());
-            stmt.setString(6, user.getPassword());
-            stmt.setString(7, user.getLocalization());
-            //stmt.setString(8, user.getStatusAccount().toString());
-            stmt.setInt(8, user.getIdUser());
+                stmt.setString(1, user.getName());
+                stmt.setString(2, user.getDateOfBirth());
+                stmt.setString(3, user.getLanguage());
+                stmt.setString(4, user.getOccupation());
+                stmt.setString(5, user.getEmail());            
+                stmt.setString(6, user.getLocalization());
+                //stmt.setString(8, user.getStatusAccount().toString());
+                stmt.setInt(7, user.getIdUser());
             
-            stmt.executeUpdate();
+                stmt.executeUpdate();
             
-            u = read(user.getIdUser());
+                u = read(user.getIdUser());
+                
+                this.connection.commit();
+            
+            } catch(SQLException e) {
+                this.connection.rollback();
+                throw e;
+            }
+        }
+        else {
+            try {
+                PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            
+                stmt.setString(1, user.getName());
+                stmt.setString(2, user.getDateOfBirth());
+                stmt.setString(3, user.getLanguage());
+                stmt.setString(4, user.getOccupation());
+                stmt.setString(5, user.getEmail());
+                stmt.setString(6, user.getPassword());
+                stmt.setString(7, user.getLocalization());
+                //stmt.setString(8, user.getStatusAccount().toString());
+                stmt.setInt(8, user.getIdUser());
+            
+                stmt.executeUpdate();
+            
+                u = read(user.getIdUser());
                         
-            this.connection.commit();
+                this.connection.commit();
             
-        } catch(SQLException e) {
-            this.connection.rollback();
-            throw e;
-        }                
+            } catch(SQLException e) {
+                this.connection.rollback();
+                throw e;
+            }                
+        }
         return u;
     }
 
@@ -164,7 +193,7 @@ public class UserDAO {
     }
     
     public User login(User u) throws SQLException, ClassNotFoundException {
-        String sqlQuery = "SELECT * FROM user WHERE email = ? and password =? ;";
+        String sqlQuery = "SELECT * FROM user WHERE email = ? and password =? and statusAccount = 'Active';";
         
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
