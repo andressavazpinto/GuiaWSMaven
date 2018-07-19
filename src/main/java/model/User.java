@@ -20,7 +20,7 @@ public class User {
     String occupation;
     String email;
     String password;
-    String localization;
+    int id_localization;
     Status statusAccount;
     
     public User() {        
@@ -31,7 +31,7 @@ public class User {
     }
        
     public User(int idUser, String name, String dateOfBirth, String language, String occupation,
-            String email, String password, String localization, Status statusAccount) {
+            String email, String password, int id_localization, Status statusAccount) {
         this.idUser = idUser;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -39,7 +39,7 @@ public class User {
         this.occupation = occupation;
         this.email = email;
         this.password = password;
-        this.localization = localization;
+        this.id_localization = id_localization;
         this.statusAccount = statusAccount;
     }
 
@@ -99,12 +99,12 @@ public class User {
         this.password = password;
     }
 
-    public String getLocalization() {
-        return localization;
+    public int getId_Localization() {
+        return id_localization;
     }
 
-    public void setLocalization(String localization) {
-        this.localization = localization;
+    public void setId_Localization(int localization) {
+        this.id_localization = localization;
     }
 
     public Status getStatusAccount() {
@@ -117,6 +117,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", occupation=" + occupation + ", email=" + email + ", password=" + password + ", localization=" + localization + ", statusAccount=" + statusAccount + '}';
+        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", occupation=" + occupation + ", email=" + email + ", password=" + password + ", id_localization=" + id_localization + ", statusAccount=" + statusAccount + '}';
     }
 }

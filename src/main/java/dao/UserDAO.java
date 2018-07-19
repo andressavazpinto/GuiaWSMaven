@@ -29,7 +29,7 @@ public class UserDAO {
     public int register(User user) throws SQLException, ClassNotFoundException {
         int id=-1;
         String sqlQuery = "INSERT INTO user (name, dateOfBirth, language, occupation, email,"
-                + "password, localization, statusAccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                + "password, id_localization, statusAccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         String sqlQuery2 = "SELECT LAST_INSERT_ID() AS 'aux';";
                 
         try {
@@ -40,7 +40,7 @@ public class UserDAO {
             stmt.setString(4, user.getOccupation());
             stmt.setString(5, user.getEmail());
             stmt.setString(6, user.getPassword());
-            stmt.setString(7, user.getLocalization());
+            stmt.setInt(7, user.getId_Localization());
             stmt.setString(8, user.getStatusAccount().toString());
             
             stmt.executeUpdate();                        
@@ -64,10 +64,10 @@ public class UserDAO {
     public User update(User user) throws SQLException, ClassNotFoundException {
         User u = new User();
         String sqlQuery = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
-                + "email = ?, password = ?, localization = ? WHERE idUser = ?;";
+                + "email = ?, password = ?, id_localization = ? WHERE idUser = ?;";
         
         String sqlQuery2 = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
-                + "email = ?, localization = ? WHERE idUser = ?;";
+                + "email = ?, id_localization = ? WHERE idUser = ?;";
         
         if(user.getPassword() == null ) {
             try {
@@ -78,7 +78,7 @@ public class UserDAO {
                 stmt.setString(3, user.getLanguage());
                 stmt.setString(4, user.getOccupation());
                 stmt.setString(5, user.getEmail());            
-                stmt.setString(6, user.getLocalization());
+                stmt.setInt(6, user.getId_Localization());
                 //stmt.setString(8, user.getStatusAccount().toString());
                 stmt.setInt(7, user.getIdUser());
             
@@ -103,7 +103,7 @@ public class UserDAO {
                 stmt.setString(4, user.getOccupation());
                 stmt.setString(5, user.getEmail());
                 stmt.setString(6, user.getPassword());
-                stmt.setString(7, user.getLocalization());
+                stmt.setInt(7, user.getId_Localization());
                 //stmt.setString(8, user.getStatusAccount().toString());
                 stmt.setInt(8, user.getIdUser());
             
@@ -186,7 +186,7 @@ public class UserDAO {
         u.setOccupation(rs.getString("occupation"));
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password"));
-        u.setLocalization(rs.getString("localization"));        
+        u.setId_Localization(rs.getInt("id_localization"));        
         u.setStatusAccount(Status.valueOf(rs.getString("statusAccount")));
         
         return u;
