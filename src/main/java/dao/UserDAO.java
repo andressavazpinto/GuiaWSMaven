@@ -40,7 +40,7 @@ public class UserDAO {
             stmt.setString(4, user.getOccupation());
             stmt.setString(5, user.getEmail());
             stmt.setString(6, user.getPassword());
-            stmt.setInt(7, user.getId_Localization());
+            stmt.setInt(7, user.getIdLocalization());
             stmt.setString(8, user.getStatusAccount().toString());
             
             stmt.executeUpdate();                        
@@ -78,7 +78,7 @@ public class UserDAO {
                 stmt.setString(3, user.getLanguage());
                 stmt.setString(4, user.getOccupation());
                 stmt.setString(5, user.getEmail());            
-                stmt.setInt(6, user.getId_Localization());
+                stmt.setInt(6, user.getIdLocalization());
                 //stmt.setString(8, user.getStatusAccount().toString());
                 stmt.setInt(7, user.getIdUser());
             
@@ -103,7 +103,7 @@ public class UserDAO {
                 stmt.setString(4, user.getOccupation());
                 stmt.setString(5, user.getEmail());
                 stmt.setString(6, user.getPassword());
-                stmt.setInt(7, user.getId_Localization());
+                stmt.setInt(7, user.getIdLocalization());
                 //stmt.setString(8, user.getStatusAccount().toString());
                 stmt.setInt(8, user.getIdUser());
             
@@ -186,7 +186,7 @@ public class UserDAO {
         u.setOccupation(rs.getString("occupation"));
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password"));
-        u.setId_Localization(rs.getInt("id_localization"));        
+        u.setIdLocalization(rs.getInt("id_localization"));        
         u.setStatusAccount(Status.valueOf(rs.getString("statusAccount")));
         
         return u;
