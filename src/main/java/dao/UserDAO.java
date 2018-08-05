@@ -12,7 +12,7 @@ import model.User;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
-import util.Status;
+import util.StatusUser;
 import infra.ConnectionJDBC;
 
 /**
@@ -187,7 +187,7 @@ public class UserDAO {
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password"));
         u.setIdLocalization(rs.getInt("id_localization"));        
-        u.setStatusAccount(Status.valueOf(rs.getString("statusAccount")));
+        u.setStatusAccount(StatusUser.valueOf(rs.getString("statusAccount")));
         
         return u;
     }

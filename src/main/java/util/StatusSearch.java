@@ -9,6 +9,6 @@ package util;
  *
  * @author Andressa
  */
-public enum Status {
-    Active, Reported, Inactive
+public enum StatusSearch {
+    Founded, WaitingAnswer, Rejected;
 }

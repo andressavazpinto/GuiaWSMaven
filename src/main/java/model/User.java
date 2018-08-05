@@ -5,7 +5,7 @@
  */
 package model;
 
-import util.Status;
+import util.StatusUser;
 
 /**
  *
@@ -13,15 +13,15 @@ import util.Status;
  */
 public class User {
     
-    int idUser;
-    String name;
-    String dateOfBirth;
-    String language;
-    String occupation;
-    String email;
-    String password;
-    int id_localization;
-    Status statusAccount;
+    private int idUser;
+    private String name;
+    private String dateOfBirth;
+    private String language;
+    private String occupation;
+    private String email;
+    private String password;
+    private int idLocalization;
+    private StatusUser statusAccount;
     
     public User() {        
     }
@@ -31,7 +31,7 @@ public class User {
     }
        
     public User(int idUser, String name, String dateOfBirth, String language, String occupation,
-            String email, String password, int id_localization, Status statusAccount) {
+            String email, String password, int idLocalization, StatusUser statusAccount) {
         this.idUser = idUser;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -39,7 +39,7 @@ public class User {
         this.occupation = occupation;
         this.email = email;
         this.password = password;
-        this.id_localization = id_localization;
+        this.idLocalization = idLocalization;
         this.statusAccount = statusAccount;
     }
 
@@ -99,24 +99,24 @@ public class User {
         this.password = password;
     }
 
-    public int getId_Localization() {
-        return id_localization;
+    public int getIdLocalization() {
+        return idLocalization;
     }
 
-    public void setId_Localization(int localization) {
-        this.id_localization = localization;
+    public void setIdLocalization(int localization) {
+        this.idLocalization = localization;
     }
 
-    public Status getStatusAccount() {
+    public StatusUser getStatusAccount() {
         return statusAccount;
     }
 
-    public void setStatusAccount(Status statusAccount) {
+    public void setStatusAccount(StatusUser statusAccount) {
         this.statusAccount = statusAccount;
     }
 
     @Override
     public String toString() {
-        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", occupation=" + occupation + ", email=" + email + ", password=" + password + ", id_localization=" + id_localization + ", statusAccount=" + statusAccount + '}';
+        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", occupation=" + occupation + ", email=" + email + ", password=" + password + ", idLocalization=" + idLocalization + ", statusAccount=" + statusAccount + '}';
     }
 }

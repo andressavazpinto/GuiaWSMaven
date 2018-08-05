@@ -28,7 +28,7 @@ public class LocalizationDAO {
     public int register(Localization localization) throws SQLException, ClassNotFoundException {
         int id=-1;
         String sqlQuery = "INSERT INTO localization (latitude, longitude, city, uf, country)"
-                + " VALUES (?, ?, ?, ?, ?, ?);";
+                + " VALUES (?, ?, ?, ?, ?);";
         String sqlQuery2 = "SELECT LAST_INSERT_ID() AS 'aux';"; //retornar o id da localização inserida
                 
         try {
