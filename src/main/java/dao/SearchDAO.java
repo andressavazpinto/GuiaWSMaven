@@ -10,8 +10,10 @@ import infra.ConnectionMySQLJDBC;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Search;
 import util.StatusSearch;
+import java.util.List;
 
 /**
  *
@@ -49,11 +51,29 @@ public class SearchDAO {
             throw e;
         }
         return null;
-    }    
+    }
     
-    public int register(Search search) throws SQLException, ClassNotFoundException {
-        int id=-1;
-        String sqlQuery = "INSERT INTO search (status, idUser)"
+    public List<Integer> read() throws SQLException {
+        String sqlQuery = "select id_user from search where status = \"Searching\";";
+        
+        try {
+            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
+            ResultSet rs = stmt.executeQuery();
+            
+            List<Integer> results = new ArrayList();
+            
+            if(rs.next()) {
+                results.add(parser(rs).getIdUser());
+            }           
+            
+            return results;
+        } catch(SQLException e) {
+            throw e;
+        }        
+    }
+    
+    public void register(Search search) throws SQLException, ClassNotFoundException {        
+        String sqlQuery = "INSERT INTO search (status, id_user)"
                 + " VALUES (?, ?);";        
                 
         try {
@@ -67,14 +87,12 @@ public class SearchDAO {
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }
-                        
-        return id;
+         }                                
     }
     
     public void update(Search search) throws SQLException {        
         String sqlQuery = "UPDATE search SET status = ?"
-                + " WHERE idUser = ?;";
+                + " WHERE id_user = ?;";
         
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
