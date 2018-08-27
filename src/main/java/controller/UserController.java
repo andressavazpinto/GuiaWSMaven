@@ -21,7 +21,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import model.Search;
 import model.User;
+import dao.SearchDAO;
+import util.StatusSearch;
 
 /**
  *
@@ -46,9 +49,7 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public User get(@PathParam("id") int id) throws ClassNotFoundException {
-        //Usuario u1 = new User(1, "Usuário1", "04/04/2000", "Português BR", "Estagiário", "usuario@teste.com", "123123", "São Paulo, SP - Brasil", Status.Ativo);
-        
+    public User get(@PathParam("id") int id) throws ClassNotFoundException {        
         try {
             UserDAO userDAO = new UserDAO();
             return userDAO.read(id);
@@ -62,9 +63,18 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("")
     public int create(User user) throws ClassNotFoundException {
+        int aux = -1;
         try {
-            UserDAO userDAO = new UserDAO();
-            return userDAO.register(user);
+            UserDAO userDAO = new UserDAO();           
+            aux = userDAO.register(user);
+            
+            SearchDAO searchDAO = new SearchDAO();
+            Search search = new Search();
+            search.setStatus(StatusSearch.Initial);
+            search.setIdUser(aux);
+            searchDAO.register(search);
+            
+            return aux;
             //return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
