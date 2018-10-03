@@ -28,20 +28,19 @@ public class UserDAO {
     
     public int register(User user) throws SQLException, ClassNotFoundException {
         int id=-1;
-        String sqlQuery = "INSERT INTO user (name, dateOfBirth, language, occupation, email,"
-                + "password, id_localization, statusAccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String sqlQuery = "INSERT INTO user (name, dateOfBirth, language, email,"
+                + "password, id_localization, statusAccount) VALUES (?, ?, ?, ?, ?, ?, ?);";
         String sqlQuery2 = "SELECT LAST_INSERT_ID() AS 'aux';";
                 
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getDateOfBirth());
-            stmt.setString(3, user.getLanguage());
-            stmt.setString(4, user.getOccupation());
-            stmt.setString(5, user.getEmail());
-            stmt.setString(6, user.getPassword());
-            stmt.setInt(7, user.getIdLocalization());
-            stmt.setString(8, user.getStatusAccount().toString());
+            stmt.setString(3, user.getLanguage());            
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getPassword());
+            stmt.setInt(6, user.getIdLocalization());
+            stmt.setString(7, user.getStatusAccount().toString());
             
             stmt.executeUpdate();                        
             
@@ -63,29 +62,29 @@ public class UserDAO {
     
     public User update(User user) throws SQLException, ClassNotFoundException {
         User u = new User();
-        String sqlQuery = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
-                + "email = ?, password = ?, id_localization = ? WHERE idUser = ?;";
+        String sqlQuery = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?,"
+                + "email = ?, password = ? /*, id_localization = ?*/ WHERE idUser = ?;";
         
-        String sqlQuery2 = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?, occupation = ?,"
-                + "email = ?, id_localization = ? WHERE idUser = ?;";
+        String sqlQuery2 = "UPDATE user SET name = ?, dateOfBirth = ?, language = ?,"
+                + "email = ? /*, id_localization = ?*/ WHERE idUser = ?;";
         
-        if(user.getPassword() == null ) {
+        String pass = user.getPassword();
+        
+        if(pass == null | ! pass.equals("") | ! pass.matches(" ")) {
+            System.out.println(pass);
             try {
                 PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery2);
             
                 stmt.setString(1, user.getName());
                 stmt.setString(2, user.getDateOfBirth());
-                stmt.setString(3, user.getLanguage());
-                stmt.setString(4, user.getOccupation());
-                stmt.setString(5, user.getEmail());            
-                stmt.setInt(6, user.getIdLocalization());
+                stmt.setString(3, user.getLanguage());                
+                stmt.setString(4, user.getEmail());            
+                //stmt.setInt(5, user.getIdLocalization());
                 //stmt.setString(8, user.getStatusAccount().toString());
-                stmt.setInt(7, user.getIdUser());
+                stmt.setInt(5, user.getIdUser());
             
-                stmt.executeUpdate();
-            
-                u = read(user.getIdUser());
-                
+                stmt.executeUpdate();            
+                u = read(user.getIdUser());                
                 this.connection.commit();
             
             } catch(SQLException e) {
@@ -99,18 +98,15 @@ public class UserDAO {
             
                 stmt.setString(1, user.getName());
                 stmt.setString(2, user.getDateOfBirth());
-                stmt.setString(3, user.getLanguage());
-                stmt.setString(4, user.getOccupation());
-                stmt.setString(5, user.getEmail());
-                stmt.setString(6, user.getPassword());
-                stmt.setInt(7, user.getIdLocalization());
+                stmt.setString(3, user.getLanguage());                
+                stmt.setString(4, user.getEmail());
+                stmt.setString(5, user.getPassword());
+                //stmt.setInt(6, user.getIdLocalization());
                 //stmt.setString(8, user.getStatusAccount().toString());
-                stmt.setInt(8, user.getIdUser());
+                stmt.setInt(6, user.getIdUser());
             
-                stmt.executeUpdate();
-            
-                u = read(user.getIdUser());
-                        
+                stmt.executeUpdate();            
+                u = read(user.getIdUser());                        
                 this.connection.commit();
             
             } catch(SQLException e) {
@@ -142,11 +138,13 @@ public class UserDAO {
     
     public User read(int id) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user WHERE idUser = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             
             if(rs.next()) {
                 return parser(rs);
@@ -154,15 +152,21 @@ public class UserDAO {
         } catch(SQLException e) {
             throw e;
         }
+        finally {
+            stmt.close();
+            rs.close();			
+        }
         return null;
     }
     
     public List<User> list() throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user ORDER by idUser";       
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            ResultSet rs = stmt.executeQuery();
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
+            rs = stmt.executeQuery();
             
             List<User> users = new ArrayList();
             
@@ -174,6 +178,10 @@ public class UserDAO {
         } catch(SQLException e) {
             throw e;
         }
+        finally {
+            stmt.close();
+            rs.close();			
+        }
     }
     
     private User parser(ResultSet rs) throws SQLException {
@@ -182,8 +190,7 @@ public class UserDAO {
         u.setIdUser(rs.getInt("idUser"));
         u.setName(rs.getString("name"));
         u.setDateOfBirth(rs.getString("dateOfBirth"));
-        u.setLanguage(rs.getString("language"));
-        u.setOccupation(rs.getString("occupation"));
+        u.setLanguage(rs.getString("language"));        
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password"));
         u.setIdLocalization(rs.getInt("id_localization"));        
@@ -194,12 +201,14 @@ public class UserDAO {
     
     public User login(User u) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user WHERE email = ? and password =? and statusAccount = 'Active';";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setString(1, u.getEmail());
             stmt.setString(2, u.getPassword());
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             
             if(rs.next()) {
                 return parser(rs);
@@ -207,23 +216,33 @@ public class UserDAO {
         } catch(SQLException e) {
             throw e;
         }
+        finally {
+            stmt.close();
+            rs.close();			
+        }
         return null;
     }
     
     
     public boolean checkEmail(String email) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user WHERE email = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             
             if(rs.next()) {               
                 return true; //existe cadastro
             }            
         } catch(SQLException e) {
             throw e;
+        }
+        finally {
+            stmt.close();
+            rs.close();			
         }
         return false;
     }    
