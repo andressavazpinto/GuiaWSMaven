@@ -27,10 +27,12 @@ public class UserInterestDAO {
     
     public List<UserInterest> list() throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user_interest ORDER by idUserInterest";       
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            ResultSet rs = stmt.executeQuery();
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
+            rs = stmt.executeQuery();
             
             List<UserInterest> userInterests = new ArrayList();
             
@@ -41,6 +43,10 @@ public class UserInterestDAO {
             return userInterests;         
         } catch(SQLException e) {
             throw e;
+        }
+        finally {
+            stmt.close();
+            rs.close();			
         }
     }
     
@@ -132,11 +138,12 @@ public class UserInterestDAO {
     
     public List<UserInterest> listByUser(int idUser) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user_interest WHERE id_user = ? ORDER BY id_interest;";
-        
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setInt(1, idUser);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             
             List<UserInterest> userInterests = new ArrayList();
             
@@ -146,7 +153,11 @@ public class UserInterestDAO {
             return userInterests;
         } catch(SQLException e) {
             throw e;
-        }        
+        }
+        finally {
+            stmt.close();
+            rs.close();			
+        }
     }
     
     public void update(int idUser, List<UserInterest> userInterests) throws SQLException {        

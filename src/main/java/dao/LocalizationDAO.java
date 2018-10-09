@@ -39,20 +39,17 @@ public class LocalizationDAO {
             stmt.setString(4, localization.getUf());
             stmt.setString(5, localization.getCountry());            
             
-            stmt.executeUpdate();                        
-            
-            PreparedStatement stmt2 = this.connection.getConnection().prepareStatement(sqlQuery2);
-            
+            stmt.executeUpdate();                                    
+            PreparedStatement stmt2 = this.connection.getConnection().prepareStatement(sqlQuery2);            
             ResultSet rs = stmt2.executeQuery();            
             
             if(rs.next())
-                id = rs.getInt("aux");
-            
+                id = rs.getInt("aux");            
             this.connection.commit();            
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }
+        }
                         
         return id;
     }
@@ -81,10 +78,12 @@ public class LocalizationDAO {
     
     public List<Localization> list() throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM localization ORDER by idLocalization";       
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            ResultSet rs = stmt.executeQuery();
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            rs = stmt.executeQuery();
             
             List<Localization> locs = new ArrayList();
             
@@ -95,6 +94,10 @@ public class LocalizationDAO {
             return locs;         
         } catch(SQLException e) {
             throw e;
+        }
+        finally {
+            stmt.close();
+            rs.close();			
         }
     }
     

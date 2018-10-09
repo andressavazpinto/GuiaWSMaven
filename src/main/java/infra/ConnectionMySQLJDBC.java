@@ -22,6 +22,7 @@ public class ConnectionMySQLJDBC implements ConnectionJDBC {
     public ConnectionMySQLJDBC() throws SQLException, ClassNotFoundException {    
          Class.forName("com.mysql.jdbc.Driver");
       
+         //this.connection = DriverManager.getConnection("jdbc:mysql://guia.cdua7jybmdpy.us-east-2.rds.amazonaws.com:3306/Guia", "Dessa201405159", "201405159");
          this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Guia", "root", "9114115693532601");
          this.connection.setAutoCommit(false);
     }

@@ -10,5 +10,5 @@ package util;
  * @author Andressa
  */
 public enum StatusSearch {
-    Founded, WaitingAnswer, Rejected;
+    Initial, Searching, Found, WaitingAnswer, Accepted, Rejected;
 }

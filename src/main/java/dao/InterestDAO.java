@@ -27,20 +27,25 @@ public class InterestDAO {
     
     public List<Interest> list() throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM interest ORDER by idInterest";       
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            ResultSet rs = stmt.executeQuery();
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            rs = stmt.executeQuery();
             
             List<Interest> interests = new ArrayList();
             
             while(rs.next()) {
                 interests.add(parser(rs));                
-            }
-            
+            }            
             return interests;         
         } catch(SQLException e) {
             throw e;
+        }
+        finally {
+            stmt.close();
+            rs.close();			
         }
     }
     

@@ -16,8 +16,7 @@ public class User {
     private int idUser;
     private String name;
     private String dateOfBirth;
-    private String language;
-    private String occupation;
+    private String language;    
     private String email;
     private String password;
     private int idLocalization;
@@ -30,13 +29,12 @@ public class User {
         this.idUser = idUser;
     }
        
-    public User(int idUser, String name, String dateOfBirth, String language, String occupation,
+    public User(int idUser, String name, String dateOfBirth, String language,
             String email, String password, int idLocalization, StatusUser statusAccount) {
         this.idUser = idUser;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.language = language;
-        this.occupation = occupation;
+        this.language = language;        
         this.email = email;
         this.password = password;
         this.idLocalization = idLocalization;
@@ -75,14 +73,6 @@ public class User {
         this.language = language;
     }
 
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -117,6 +107,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", occupation=" + occupation + ", email=" + email + ", password=" + password + ", idLocalization=" + idLocalization + ", statusAccount=" + statusAccount + '}';
+        return "User{" + "idUser=" + idUser + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", language=" + language + ", email=" + email + ", password=" + password + ", idLocalization=" + idLocalization + ", statusAccount=" + statusAccount + '}';
     }
 }

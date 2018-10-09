@@ -7,6 +7,7 @@ package controller;
 
 import dao.SearchDAO;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -36,21 +37,34 @@ public class SearchController {
             SearchDAO searchDAO = new SearchDAO();
             return searchDAO.read(id);
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("")
+    public List<Integer> get() throws ClassNotFoundException {
+        try {
+            SearchDAO searchDAO = new SearchDAO();
+            return searchDAO.read();
+        } catch(SQLException e) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("")
-    public int create(Search search) throws ClassNotFoundException {
+    public void create(Search search) throws ClassNotFoundException {
         try {
             SearchDAO searchDAO = new SearchDAO();
-            return searchDAO.register(search);
+            searchDAO.register(search);
             //return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -64,7 +78,7 @@ public class SearchController {
             searchDAO.update(search);
             //return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }

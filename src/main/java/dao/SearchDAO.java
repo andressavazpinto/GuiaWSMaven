@@ -38,11 +38,13 @@ public class SearchDAO {
     
     public Search read(int id) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM search WHERE id_user = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             
             if(rs.next()) {
                 return parser(rs);
@@ -50,26 +52,34 @@ public class SearchDAO {
         } catch(SQLException e) {
             throw e;
         }
+        finally {
+            stmt.close();
+            rs.close();			
+        }
         return null;
     }
     
-    public List<Integer> read() throws SQLException {
-        String sqlQuery = "select id_user from search where status = \"Searching\";";
+    public List<Integer> read() throws SQLException {        
+        String sqlQuery = "select id_user from search where status = \'Searching\';";        
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         
         try {
-            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            ResultSet rs = stmt.executeQuery();
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            rs = stmt.executeQuery();
             
             List<Integer> results = new ArrayList();
+            List<Search> search = new ArrayList();
+            int i = 0;
             
-            if(rs.next()) {
-                results.add(parser(rs).getIdUser());
-            }           
-            
+            while(rs.next()) {
+                results.add(rs.getInt("id_user"));
+                i++;
+            }
             return results;
         } catch(SQLException e) {
             throw e;
-        }        
+        }
     }
     
     public void register(Search search) throws SQLException, ClassNotFoundException {        
@@ -102,10 +112,10 @@ public class SearchDAO {
             
             stmt.executeUpdate();            
             
-            this.connection.commit();
-            this.connection.rollback();
+            this.connection.commit();            
             
         } catch(SQLException e) {
+            this.connection.rollback();
             throw e;
         }
     }
