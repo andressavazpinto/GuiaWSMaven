@@ -18,17 +18,19 @@ import java.util.logging.Logger;
 public class ConnectionMySQLJDBC implements ConnectionJDBC {
     
     Connection connection = null;
-    
+    String host = "jdbc:mysql://localhost:3306/Guia";
+    String user = "root";
+    String password = "9114115693532601";
+         
     public ConnectionMySQLJDBC() throws SQLException, ClassNotFoundException {    
-         Class.forName("com.mysql.jdbc.Driver");
-      
-         //this.connection = DriverManager.getConnection("jdbc:mysql://guia.cdua7jybmdpy.us-east-2.rds.amazonaws.com:3306/Guia", "Dessa201405159", "201405159");
-         this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Guia", "root", "9114115693532601");
+         Class.forName("com.mysql.jdbc.Driver"); 
+         //this.connection = DriverManager.getConnection("jdbc:mysql://guia.cdua7jybmdpy.us-east-2.rds.amazonaws.com:3306/Guia", "Dessa201405159", "201405159");         
+         this.connection = DriverManager.getConnection(host, user, password);
          this.connection.setAutoCommit(false);
     }
 
     @Override
-    public Connection getConnection() {
+    public Connection getConnection() {        
         return this.connection;
     }
 
@@ -40,7 +42,7 @@ public class ConnectionMySQLJDBC implements ConnectionJDBC {
             } catch (SQLException ex) {
                 Logger.getLogger(ConnectionMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
+        }         
     }
 
     @Override
@@ -60,5 +62,5 @@ public class ConnectionMySQLJDBC implements ConnectionJDBC {
                 this.close();
             }
         }  
-    }    
+    }        
 }

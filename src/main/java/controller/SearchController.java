@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.SearchByRegionDAO;
 import dao.SearchDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.Search;
+import model.SearchByRegion;
 
 /**
  *
@@ -45,10 +47,10 @@ public class SearchController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("")
-    public List<Integer> get() throws ClassNotFoundException {
+    public List<Integer> listAllLessMe(int id) throws ClassNotFoundException {
         try {
             SearchDAO searchDAO = new SearchDAO();
-            return searchDAO.read();
+            return searchDAO.listAllLessMe(id);
         } catch(SQLException e) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -61,8 +63,7 @@ public class SearchController {
     public void create(Search search) throws ClassNotFoundException {
         try {
             SearchDAO searchDAO = new SearchDAO();
-            searchDAO.register(search);
-            //return Response.status(Response.Status.OK).build();
+            searchDAO.register(search);            
         } catch(SQLException e) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -75,11 +76,36 @@ public class SearchController {
     public void update(Search search) throws ClassNotFoundException {        
         try {
             SearchDAO searchDAO = new SearchDAO();
-            searchDAO.update(search);
-            //return Response.status(Response.Status.OK).build();
+            searchDAO.update(search);            
         } catch(SQLException e) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("regions/{id}")
+    public List<SearchByRegion> getRegions(@PathParam("id") int id) throws ClassNotFoundException {        
+        try {
+            SearchByRegionDAO searchDAO = new SearchByRegionDAO();
+            return searchDAO.getRegions(id);
+        } catch(SQLException e) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/{city}/{id}")
+    public List<SearchByRegion> getUsersRegions(@PathParam("city") String city, @PathParam("id") int id) throws ClassNotFoundException {        
+        try {
+            SearchByRegionDAO searchDAO = new SearchByRegionDAO();
+            return searchDAO.getUsersCity(city, id);
+        } catch(SQLException e) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
     }
 }

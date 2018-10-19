@@ -45,8 +45,9 @@ public class UserInterestDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
     }
     
@@ -75,8 +76,12 @@ public class UserInterestDAO {
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }
+        }
 
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+        
         return output;
     }
     
@@ -95,7 +100,10 @@ public class UserInterestDAO {
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }       
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
     }
     
     public int delete(int id) throws SQLException, ClassNotFoundException {
@@ -113,7 +121,9 @@ public class UserInterestDAO {
         } catch(SQLException e) {
             throw e;
         }
-        
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
         return affectedRows;
     }
     
@@ -132,7 +142,9 @@ public class UserInterestDAO {
         } catch(SQLException e) {
             throw e;
         }
-        
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
         return affectedRows;
     }
     
@@ -155,8 +167,9 @@ public class UserInterestDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
     }
     
@@ -182,6 +195,9 @@ public class UserInterestDAO {
             
         } catch(SQLException e) {
             throw e;
-        }                
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
     }   
 }

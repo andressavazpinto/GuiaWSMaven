@@ -70,7 +70,7 @@ public class UserController {
             
             SearchDAO searchDAO = new SearchDAO();
             Search search = new Search();
-            search.setStatus(StatusSearch.Initial);
+            search.setStatus(StatusSearch.Searching);
             search.setIdUser(aux);
             searchDAO.register(search);
             
@@ -124,10 +124,10 @@ public class UserController {
         }   
     }
     
-    /*@GET
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{email}")
-    public Boolean checkEmail(@PathParam("email") String email) throws ClassNotFoundException {                
+    @Path("email/{email}")
+    public boolean checkEmail(@PathParam("email") String email) throws ClassNotFoundException {                
         try {
             UserDAO userDAO = new UserDAO();
             return userDAO.checkEmail(email);
@@ -135,5 +135,18 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
-    }*/
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("pass/{email}")
+    public String getPass(@PathParam("email") String email) throws ClassNotFoundException {                
+        try {
+            UserDAO userDAO = new UserDAO();
+            return userDAO.getPass(email);
+        } catch(SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
 }

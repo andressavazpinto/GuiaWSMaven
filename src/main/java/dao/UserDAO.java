@@ -55,8 +55,10 @@ public class UserDAO {
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }
-                        
+        }
+        finally {           
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
         return id;
     }
     
@@ -91,6 +93,9 @@ public class UserDAO {
                 this.connection.rollback();
                 throw e;
             }
+            finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+            }
         }
         else {
             try {
@@ -112,8 +117,12 @@ public class UserDAO {
             } catch(SQLException e) {
                 this.connection.rollback();
                 throw e;
-            }                
+            }
+            finally {                
+                try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+            }
         }
+        
         return u;
     }
 
@@ -132,7 +141,9 @@ public class UserDAO {
         } catch(SQLException e) {
             throw e;
         }
-        
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
         return affectedRows;
     }
     
@@ -153,8 +164,9 @@ public class UserDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
         return null;
     }
@@ -179,9 +191,16 @@ public class UserDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
+        
+    /*    finally {
+    DbUtils.closeQuietly(rs);
+    DbUtils.closeQuietly(ps);
+    DbUtils.closeQuietly(conn);
+}*/
     }
     
     private User parser(ResultSet rs) throws SQLException {
@@ -217,12 +236,36 @@ public class UserDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }			
         }
         return null;
     }
     
+     public String getPass(String email) throws SQLException, ClassNotFoundException {
+        String sqlQuery = "SELECT password FROM user WHERE email = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                return rs.getString("password");
+            }            
+        } catch(SQLException e) {
+            throw e;
+        }
+        finally {
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }		
+        }
+        return null;
+    }
     
     public boolean checkEmail(String email) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user WHERE email = ?;";
@@ -241,8 +284,9 @@ public class UserDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }			
         }
         return false;
     }    

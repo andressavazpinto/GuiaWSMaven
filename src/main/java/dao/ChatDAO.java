@@ -28,7 +28,7 @@ private final ConnectionJDBC connection;
     
     public int register(Chat chat) throws SQLException, ClassNotFoundException {
         int id=-1;
-        String sqlQuery = "INSERT INTO chat (idUser1, idUser2, status)"
+        String sqlQuery = "INSERT INTO chat (id_user1, id_user2, status)"
                 + " VALUES (?, ?, ?);";
         String sqlQuery2 = "SELECT LAST_INSERT_ID() AS 'aux';";
                 
@@ -51,14 +51,17 @@ private final ConnectionJDBC connection;
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
-         }
-                        
+        }
+        finally {
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+
         return id;
     }
     
     public void update(Chat chat) throws SQLException, ClassNotFoundException {        
         String sqlQuery = "UPDATE user SET status = ?"
-                + " WHERE idUser1 = ? OR idUser2 = ?;";
+                + " WHERE id_user1 = ? OR id_user2 = ?;";
                                    
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
@@ -73,11 +76,14 @@ private final ConnectionJDBC connection;
         } catch(SQLException e) {
             this.connection.rollback();
             throw e;
-        }                
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
     }
     
     public Chat read(int id) throws SQLException, ClassNotFoundException {
-        String sqlQuery = "SELECT * FROM chat WHERE status = ? & idUser1 = ? OR idUser2 = ?;";
+        String sqlQuery = "SELECT * FROM chat WHERE status = ? & (id_user1 = ? OR id_user2 = ?);";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
@@ -95,8 +101,9 @@ private final ConnectionJDBC connection;
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
         return null;
     }
@@ -121,16 +128,17 @@ private final ConnectionJDBC connection;
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
     }
     
     private Chat parser(ResultSet rs) throws SQLException {
         Chat chat = new Chat();
         
-        chat.setIdUser1(rs.getInt("idUser1"));
-        chat.setIdUser2(rs.getInt("idUser2"));
+        chat.setIdUser1(rs.getInt("id_user1"));
+        chat.setIdUser2(rs.getInt("id_user2"));
         chat.setIdChat(rs.getInt("idChat"));      
         chat.setStatus(StatusChat.valueOf(rs.getString("status")));
         

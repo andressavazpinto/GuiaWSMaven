@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -39,32 +40,33 @@ public class ConnectGuidesController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("")
     public ConnectGuides searchRamdomly(Search s) throws SQLException, ClassNotFoundException {
-        //conectar usuários com status searching               
+    //conectar usuários com status searching               
              
         SearchDAO searchDAO = new SearchDAO();
-        List<Integer> ids = searchDAO.read(); 
+        List<Integer> ids = searchDAO.listAllLessMe(s.getIdUser()); 
+        System.out.println("ids: " + ids.toString());
         int n = -1;
         
-        try {            
+        if(ids.size() > 0) {
+            System.out.println("Ids de search usua´rios" + ids.toString());
             Random rand = new Random();            
-            do {
-                n = rand.nextInt(ids.size());
-            } while(n == s.getIdUser());   
-            
-            ConnectGuides c = new ConnectGuides();
-            c.setIdConnectGuides(1);
-            c.setIdUser1(s.getIdUser());
-            c.setIdUser2(ids.get(n));
-            c.setStatus(Enum.valueOf(StatusConnectGuides.class,"Found"));
-            //System.out.println("" + c.toString());
-            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
-            ConnectGuides aux;
-            aux = connectGuidesDAO.register(c); //System.out.println("" + aux.toString());
-            return aux;            
-        } catch(ClassNotFoundException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }                
+            n = rand.nextInt(ids.size());                
+                               
+            try {
+                ConnectGuides c = new ConnectGuides();            
+                c.setIdUser1(s.getIdUser());
+                c.setIdUser2(ids.get(n));
+                c.setStatus(Enum.valueOf(StatusConnectGuides.class,"Found"));                
+                
+                ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
+                ConnectGuides aux = connectGuidesDAO.register(c);
+                return aux;
+            } catch(ClassNotFoundException e) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+                throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return null;
     }
     
     
@@ -131,16 +133,16 @@ public class ConnectGuidesController {
         }        
     }
     
-    /*@DELETE       
+    @DELETE
     @Path("{id}")
     public Response delete(@PathParam("id") Integer id) throws ClassNotFoundException {        
         try {
-            UserDAO userDAO = new UserDAO();
-            userDAO.delete(id);
+            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
+            connectGuidesDAO.delete(id);
             return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
-    }*/
+    }
 }

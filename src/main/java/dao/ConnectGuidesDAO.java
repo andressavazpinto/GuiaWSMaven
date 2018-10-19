@@ -53,8 +53,9 @@ public class ConnectGuidesDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
         return null;
     }    
@@ -77,6 +78,9 @@ public class ConnectGuidesDAO {
              this.connection.rollback();
              throw e;
         }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
         return connectGuides;
     }
     
@@ -93,11 +97,35 @@ public class ConnectGuidesDAO {
             
             stmt.executeUpdate();            
             
-            this.connection.commit();
-            this.connection.rollback();
+            this.connection.commit();            
             
         } catch(SQLException e) {
+            this.connection.rollback();
             throw e;
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+    
+    public void delete(int id) throws SQLException {
+        String sqlQuery = "DELETE FROM connectGuides WHERE idConnectGuides = ?;";
+        
+        try {
+            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            
+            stmt.setInt(1, id);
+            
+            stmt.executeUpdate();
+            
+            this.connection.commit();             
+            
+        } catch(SQLException e) {
+            this.connection.rollback();
+            throw e;           
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
     }
 }

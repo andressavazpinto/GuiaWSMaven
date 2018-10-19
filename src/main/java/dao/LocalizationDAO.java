@@ -44,11 +44,16 @@ public class LocalizationDAO {
             ResultSet rs = stmt2.executeQuery();            
             
             if(rs.next())
-                id = rs.getInt("aux");            
+                System.out.println(id+"");           
+                id = rs.getInt("aux");    
+                System.out.println(id+"");
             this.connection.commit();            
         } catch (SQLException e) {
              this.connection.rollback();
              throw e;
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
                         
         return id;
@@ -73,7 +78,10 @@ public class LocalizationDAO {
             
         } catch(SQLException e) {
             throw e;
-        }                
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
     }
     
     public List<Localization> list() throws SQLException, ClassNotFoundException {
@@ -96,8 +104,9 @@ public class LocalizationDAO {
             throw e;
         }
         finally {
-            stmt.close();
-            rs.close();			
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
     }
     
