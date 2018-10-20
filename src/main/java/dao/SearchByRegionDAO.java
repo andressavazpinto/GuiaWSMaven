@@ -58,8 +58,8 @@ public class SearchByRegionDAO {
         }
     }
     
-    public List<SearchByRegion> getUsersCity(String city, int id) throws SQLException {
-        String sqlQuery = "SELECT localization.city, localization.country, user.idUser, search.statusSearch "
+    public List<Integer> getUsersCity(String city, int id) throws SQLException {
+        String sqlQuery = "SELECT id_user "
                 + "FROM localization, user, search WHERE (search.statusSearch = ? "
                 + "AND localization.idLocalization = user.id_localization AND"
                 + " user.idUser = search.id_user and localization.city = ? AND id_user != ?)"
@@ -75,13 +75,13 @@ public class SearchByRegionDAO {
             stmt.setInt(3, id);
             rs = stmt.executeQuery();                        
             
-            List<SearchByRegion> usersCity = new ArrayList();
+            List<Integer> results = new ArrayList();
             
             while(rs.next()) {
-                usersCity.add(parserRegion(rs));
+                results.add(rs.getInt("id_user"));                
             }   
             
-            return usersCity;
+            return results;
         } catch(SQLException e) {
             throw e;
         }

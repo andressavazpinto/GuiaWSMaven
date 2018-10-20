@@ -6,6 +6,7 @@
 package controller;
 
 import dao.ConnectGuidesDAO;
+import dao.SearchByRegionDAO;
 import dao.SearchDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -55,6 +56,41 @@ public class ConnectGuidesController {
             try {
                 ConnectGuides c = new ConnectGuides();            
                 c.setIdUser1(s.getIdUser());
+                c.setIdUser2(ids.get(n));
+                c.setStatus(Enum.valueOf(StatusConnectGuides.class,"Found"));                
+                
+                ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
+                ConnectGuides aux = connectGuidesDAO.register(c);
+                return aux;
+            } catch(ClassNotFoundException e) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+                throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return null;
+    }
+    
+    
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{city}/{id}")
+    public ConnectGuides searchByRegion(@PathParam("city") String city, @PathParam("id") int id) throws SQLException, ClassNotFoundException {
+    //conectar usuários com status searching               
+             
+        SearchByRegionDAO searchDAO = new SearchByRegionDAO();
+        List<Integer> ids = searchDAO.getUsersCity(city, id); 
+        System.out.println("ids: " + ids.toString());
+        int n = -1;
+        
+        if(ids.size() > 0) {
+            System.out.println("Ids de search usua´rios" + ids.toString());
+            Random rand = new Random();            
+            n = rand.nextInt(ids.size());                
+                               
+            try {
+                ConnectGuides c = new ConnectGuides();            
+                c.setIdUser1(id);
                 c.setIdUser2(ids.get(n));
                 c.setStatus(Enum.valueOf(StatusConnectGuides.class,"Found"));                
                 

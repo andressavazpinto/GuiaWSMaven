@@ -95,17 +95,4 @@ public class SearchController {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/{city}/{id}")
-    public List<SearchByRegion> getUsersRegions(@PathParam("city") String city, @PathParam("id") int id) throws ClassNotFoundException {        
-        try {
-            SearchByRegionDAO searchDAO = new SearchByRegionDAO();
-            return searchDAO.getUsersCity(city, id);
-        } catch(SQLException e) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }        
-    }
 }
