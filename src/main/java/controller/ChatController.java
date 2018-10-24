@@ -47,8 +47,7 @@ public class ChatController {
     @Path("{id}")
     public Chat get(@PathParam("id") int id) throws ClassNotFoundException {        
         try {
-            ChatDAO chatDAO = new ChatDAO();
-            System.out.println("id: " + id + " chat: " + chatDAO.read(id).toString());
+            ChatDAO chatDAO = new ChatDAO();           
             return chatDAO.read(id);
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);

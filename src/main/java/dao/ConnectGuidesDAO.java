@@ -36,7 +36,7 @@ public class ConnectGuidesDAO {
     }
     
     public ConnectGuides read(int idUser) throws SQLException, ClassNotFoundException {
-        String sqlQuery = "SELECT * FROM connectGuides WHERE id_user1 = ? or id_user2 = ? ;";
+        String sqlQuery = "SELECT * FROM connectGuides WHERE (id_user1 = ? or id_user2 = ?);";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
@@ -44,6 +44,7 @@ public class ConnectGuidesDAO {
             stmt = this.connection.getConnection().prepareStatement(sqlQuery);
             stmt.setInt(1, idUser);
             stmt.setInt(2, idUser);
+            //stmt.setString(3, "Active");
             rs = stmt.executeQuery();
             
             if(rs.next()) {

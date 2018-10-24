@@ -181,4 +181,17 @@ public class ConnectGuidesController {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Path("{idConnectGuides}")
+    public void desactiveChat(ConnectGuides connectGuides) throws ClassNotFoundException {
+        try {
+            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
+            connectGuidesDAO.update(connectGuides);
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

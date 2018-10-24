@@ -20,7 +20,7 @@ import util.StatusChat;
  * @author Andressa
  */
 public class ChatDAO {
-private final ConnectionJDBC connection;
+    private final ConnectionJDBC connection;
     
     public ChatDAO() throws SQLException, ClassNotFoundException {
         this.connection = new ConnectionMySQLJDBC();
@@ -100,7 +100,7 @@ private final ConnectionJDBC connection;
         } catch(SQLException e) {
             throw e;
         }
-        finally {
+        finally {            
             try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
             try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
             try { connection.close(); } catch (Exception e) { e.printStackTrace(); }

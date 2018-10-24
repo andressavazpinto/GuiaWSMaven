@@ -94,7 +94,7 @@ public class UserDAO {
                 throw e;
             }
             finally {            
-            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+                try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
             }
         }
         else {

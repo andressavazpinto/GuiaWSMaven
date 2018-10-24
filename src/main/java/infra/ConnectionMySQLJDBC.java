@@ -42,7 +42,8 @@ public class ConnectionMySQLJDBC implements ConnectionJDBC {
             } catch (SQLException ex) {
                 Logger.getLogger(ConnectionMySQLJDBC.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }         
+            connection = null;
+        }
     }
 
     @Override
