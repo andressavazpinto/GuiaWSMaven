@@ -47,5 +47,10 @@ public class Search {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "Search{" + "idSearch=" + idSearch + ", status=" + status + ", idUser=" + idUser + '}';
+    }        
 }

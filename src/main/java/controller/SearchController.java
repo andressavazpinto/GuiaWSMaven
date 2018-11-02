@@ -44,7 +44,7 @@ public class SearchController {
         }        
     }
     
-    @GET
+    /*@GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("")
     public List<Integer> listAllLessMe(int id) throws ClassNotFoundException {
@@ -55,11 +55,11 @@ public class SearchController {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public void create(Search search) throws ClassNotFoundException {
         try {
             SearchDAO searchDAO = new SearchDAO();
@@ -72,7 +72,7 @@ public class SearchController {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)    
-    @Path("")
+    //@Path("")
     public void update(Search search) throws ClassNotFoundException {        
         try {
             SearchDAO searchDAO = new SearchDAO();

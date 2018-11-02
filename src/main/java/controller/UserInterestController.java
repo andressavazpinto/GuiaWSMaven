@@ -33,7 +33,7 @@ public class UserInterestController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)   
-    @Path("")
+    //@Path("")
     public List<UserInterest> list() throws ClassNotFoundException, SQLException {                     
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
@@ -46,12 +46,12 @@ public class UserInterestController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("")
-    public int /*Response*/ insertUserInterests(List<UserInterest> userinterest) throws ClassNotFoundException {
+    //@Path("")
+    public int insertUserInterests(List<UserInterest> userinterest) throws ClassNotFoundException {
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
             userInterestDAO.insertUserInterests(userinterest);
-            return 1;//Response.status(Response.Status.OK).build();
+            return 1;
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);

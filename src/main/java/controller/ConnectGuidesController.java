@@ -39,7 +39,7 @@ public class ConnectGuidesController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public ConnectGuides searchRamdomly(Search s) throws SQLException, ClassNotFoundException {
     //conectar usuários com status searching               
              
@@ -109,7 +109,7 @@ public class ConnectGuidesController {
     //sempre que mudar o status de um usuário (a partir do found, chamar o método abaixo)
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public void setConnectGuides(Search search) throws SQLException, ClassNotFoundException {
         //pegar o registro do connectguides deste usuário
         ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
@@ -147,8 +147,7 @@ public class ConnectGuidesController {
         if (statusAtual != newStatus) {
             connectGuides.setStatus(newStatus);
             try {                            
-                connectGuidesDAO.update(connectGuides);
-                //return Response.status(Response.Status.OK).build();
+                connectGuidesDAO.update(connectGuides);                
             } catch(SQLException e) {
                 Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
                 throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -182,9 +181,36 @@ public class ConnectGuidesController {
         }   
     }
     
-    @PUT
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)    
+    @Path("reject")
+    public void reject(ConnectGuides cg) throws ClassNotFoundException {
+        
+        //ConnectGuides cg = new ConnectGuides(0, to.getIdUser1(), to.getIdUser2(), null);       
+        
+        try {            
+            //deletar a conexão
+            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
+            connectGuidesDAO.delete(cg.getIdConnectGuides());
+            
+            //mudar o status dos dois para Searching
+            SearchDAO searchDAO = new SearchDAO();            
+            Search s1 = new Search(0, Enum.valueOf(StatusSearch.class, "Searching"), cg.getIdUser1());
+            Search s2 = new Search(0, Enum.valueOf(StatusSearch.class, "Rejected"), cg.getIdUser2());
+            
+            System.out.println(s1.toString() + s2.toString());
+            
+            searchDAO.updateSearchs(s1, s2);            
+            
+        } catch(SQLException e) {
+            Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /*@PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Path("{idConnectGuides}")
+    @Path("{idConnectGuides}")
     public void desactiveChat(ConnectGuides connectGuides) throws ClassNotFoundException {
         try {
             ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
@@ -193,5 +219,5 @@ public class ConnectGuidesController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 }

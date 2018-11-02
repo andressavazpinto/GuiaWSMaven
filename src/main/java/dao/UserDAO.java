@@ -86,7 +86,7 @@ public class UserDAO {
                 stmt.setInt(5, user.getIdUser());
             
                 stmt.executeUpdate();            
-                u = read(user.getIdUser());                
+                u = read(user.getIdUser());
                 this.connection.commit();
             
             } catch(SQLException e) {
@@ -122,7 +122,7 @@ public class UserDAO {
                 try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
             }
         }
-        
+                
         return u;
     }
 

@@ -60,8 +60,8 @@ public class ChatDAO {
     }
     
     public void update(Chat chat) throws SQLException, ClassNotFoundException {        
-        String sqlQuery = "UPDATE user SET status = ?"
-                + " WHERE id_user1 = ? OR id_user2 = ?;";
+        String sqlQuery = "UPDATE chat SET status = ?"
+                + " WHERE (id_user1 = ? OR id_user2 = ?);";
                                    
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);
@@ -83,7 +83,7 @@ public class ChatDAO {
     }
     
     public Chat read(int id) throws SQLException, ClassNotFoundException {
-        String sqlQuery = "SELECT * FROM chat WHERE status = ? & (id_user1 = ? OR id_user2 = ?);";
+        String sqlQuery = "SELECT * FROM chat WHERE status = ? AND (id_user1 = ? OR id_user2 = ?);";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         

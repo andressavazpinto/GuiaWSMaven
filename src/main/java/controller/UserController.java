@@ -35,7 +35,7 @@ public class UserController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)   
-    @Path("")
+    //@Path("")
     public List<User> list() throws ClassNotFoundException {                     
         try {
             UserDAO userDAO = new UserDAO();
@@ -61,7 +61,7 @@ public class UserController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public int create(User user) throws ClassNotFoundException {
         int aux = -1;
         try {
@@ -85,7 +85,7 @@ public class UserController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public User update(User user) throws ClassNotFoundException {        
         try {
             UserDAO userDAO = new UserDAO();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import model.Search;
 import util.StatusSearch;
 import java.util.List;
+import model.ConnectGuides;
 
 /**
  *
@@ -132,5 +133,57 @@ public class SearchDAO {
         finally {            
             try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
         }
-    }        
+    }
+    
+    public void updateSearchs(ConnectGuides connectGuides, StatusSearch status) throws SQLException {        
+        String sqlQuery = "UPDATE search SET statusSearch = ? WHERE id_user = ?;";
+        String sqlQuery2 = "UPDATE search SET statusSearch = ? WHERE id_user = ?;";
+        
+        try {
+            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);                                    
+            stmt.setString(1, status.toString());
+            stmt.setInt(2, connectGuides.getIdUser1());
+            stmt.executeUpdate();
+            
+            PreparedStatement stmt2 = this.connection.getConnection().prepareStatement(sqlQuery2);
+            stmt2.setString(1, status.toString());
+            stmt2.setInt(2, connectGuides.getIdUser2());           
+            stmt2.executeUpdate();
+            
+            this.connection.commit();            
+            
+        } catch(SQLException e) {
+            this.connection.rollback();
+            throw e;
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+    
+    public void updateSearchs(Search s1, Search s2) throws SQLException {        
+        String sqlQuery = "UPDATE search SET statusSearch = ? WHERE id_user = ?;";
+        String sqlQuery2 = "UPDATE search SET statusSearch = ? WHERE id_user = ?;";
+        
+        try {
+            PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);                                    
+            stmt.setString(1, s1.getStatus().toString());
+            stmt.setInt(2, s1.getIdUser());
+            stmt.executeUpdate();
+            
+            PreparedStatement stmt2 = this.connection.getConnection().prepareStatement(sqlQuery2);
+            stmt2.setString(1, s2.getStatus().toString());
+            stmt2.setInt(2, s2.getIdUser());           
+            stmt2.executeUpdate();
+            
+            this.connection.commit();            
+            
+        } catch(SQLException e) {
+            this.connection.rollback();
+            throw e;
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
 }

@@ -29,7 +29,7 @@ import model.Localization;
 public class LocalizationController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)   
-    @Path("")
+    //@Path("")
     public List<Localization> list() throws ClassNotFoundException, SQLException {                     
         try {
             LocalizationDAO localizationDAO = new LocalizationDAO();
@@ -42,7 +42,7 @@ public class LocalizationController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public int register(Localization localization) throws ClassNotFoundException {
         try {
             LocalizationDAO localizationDAO = new LocalizationDAO();
@@ -56,13 +56,12 @@ public class LocalizationController {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Produces(MediaType.APPLICATION_JSON)
+    //@Path("")
     public void update(Localization localization) throws ClassNotFoundException {        
         try {
             LocalizationDAO localizationDAO = new LocalizationDAO();
-            localizationDAO.update(localization);
-            //return Response.status(Response.Status.OK).build();
+            localizationDAO.update(localization);            
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
