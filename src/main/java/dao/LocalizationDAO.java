@@ -110,6 +110,30 @@ public class LocalizationDAO {
         }
     }
     
+    public Localization read(int id) throws SQLException, ClassNotFoundException {
+        String sqlQuery = "SELECT * FROM localization WHERE idLocalization = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                return parser(rs);
+            }            
+        } catch(SQLException e) {
+            throw e;
+        }
+        finally {
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+        return null;
+    }
+    
     private Localization parser(ResultSet rs) throws SQLException {
         Localization l = new Localization();
         

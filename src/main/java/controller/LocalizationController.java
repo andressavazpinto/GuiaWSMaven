@@ -15,6 +15,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -36,6 +37,19 @@ public class LocalizationController {
             return localizationDAO.list();
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Localization get(@PathParam("id") int id) throws ClassNotFoundException {        
+        try {
+            LocalizationDAO localizationDAO = new LocalizationDAO();
+            return localizationDAO.read(id);
+        } catch(SQLException e) {
+            Logger.getLogger(LocalizationController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
