@@ -27,18 +27,17 @@ public class SearchByRegionDAO {
     }  
     
     public List<SearchByRegion> getRegions(int id) throws SQLException {
-        String sqlQuery = "SELECT DISTINCT localization.city, localization.country, search.statusSearch "
-                + "FROM localization, user, search WHERE (search.statusSearch = ? AND"
+        String sqlQuery = "SELECT localization.city, localization.country, user.idUser, user.name, search.statusSearch "
+                + "FROM localization, user, search WHERE ("
                 + " localization.idLocalization = user.id_localization and user.idUser = search.id_user "
-                + "AND id_user != ?) ORDER BY localization.country";
+                + "AND id_user != ?) ORDER BY localization.country";                
         
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
-            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
-            stmt.setString(1, "Searching");
-            stmt.setInt(2, id);
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
             
             List<SearchByRegion> regions = new ArrayList();
@@ -97,12 +96,10 @@ public class SearchByRegionDAO {
         
         s.setCity(rs.getString("city"));
         s.setCountry(rs.getString("country"));
+        s.setIdUser(rs.getInt("idUser"));
+        s.setName(rs.getString("name"));        
         s.setStatusSearch(StatusSearch.valueOf(rs.getString("statusSearch")));
-        try {
-            s.setIdUser(rs.getInt("idUser"));
-        } catch(Exception e) {
-            s.setIdUser(0);
-        }
+
         return s;
     }
 }

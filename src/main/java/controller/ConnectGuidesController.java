@@ -63,7 +63,7 @@ public class ConnectGuidesController {
                 ConnectGuides aux = connectGuidesDAO.register(c);
                 return aux;
             } catch(ClassNotFoundException e) {
-                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
                 throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
             }
         }
@@ -105,6 +105,20 @@ public class ConnectGuidesController {
         return null;
     }
     
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("connect")
+    public ConnectGuides connectGuides(ConnectGuides connectGuides) throws SQLException, ClassNotFoundException {
+        try {
+            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();               
+            ConnectGuides aux = connectGuidesDAO.register(connectGuides);
+            return aux;
+        } catch(ClassNotFoundException e) {
+            Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);                    
+        }        
+    }
     
     //sempre que mudar o status de um usuário (a partir do found, chamar o método abaixo)
     @PUT
@@ -163,7 +177,7 @@ public class ConnectGuidesController {
             ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
             return connectGuidesDAO.read(idUser);
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -176,7 +190,7 @@ public class ConnectGuidesController {
             connectGuidesDAO.delete(id);
             return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }

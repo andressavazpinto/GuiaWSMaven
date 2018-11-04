@@ -62,14 +62,14 @@ public class ConnectGuidesDAO {
     }    
     
     public ConnectGuides register(ConnectGuides connectGuides) throws SQLException, ClassNotFoundException {        
-        String sqlQuery = "INSERT INTO connectGuides (status, id_user1, id_user2)"
-                + " VALUES (?, ?, ?);";                     
+        String sqlQuery = "INSERT INTO connectGuides (id_user1, id_user2, status) VALUES (?, ?, ?);";                     
         
         try {
             PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
-            stmt.setString(1, connectGuides.getStatus().toString());
-            stmt.setInt(2, connectGuides.getIdUser1());
-            stmt.setInt(3, connectGuides.getIdUser2());
+            
+            stmt.setInt(1, connectGuides.getIdUser1());
+            stmt.setInt(2, connectGuides.getIdUser2());
+            stmt.setString(3, connectGuides.getStatus().toString());
             
             stmt.executeUpdate();                                                              
                        
