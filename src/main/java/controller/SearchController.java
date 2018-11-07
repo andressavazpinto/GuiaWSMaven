@@ -42,20 +42,7 @@ public class SearchController {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
-    }
-    
-    /*@GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
-    public List<Integer> listAllLessMe(int id) throws ClassNotFoundException {
-        try {
-            SearchDAO searchDAO = new SearchDAO();
-            return searchDAO.listAllLessMe(id);
-        } catch(SQLException e) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, e);
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }
-    }*/
+    }    
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

@@ -39,7 +39,7 @@ public class UserInterestController {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
             return userInterestDAO.list();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(UserInterestController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -53,7 +53,7 @@ public class UserInterestController {
             userInterestDAO.insertUserInterests(userinterest);
             return 1;
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(UserInterestController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -66,7 +66,7 @@ public class UserInterestController {
             userInterestDAO.delete(id);
             return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(UserInterestController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }
@@ -79,7 +79,7 @@ public class UserInterestController {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
             return userInterestDAO.listByUser(idUser);
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(UserInterestController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -90,10 +90,9 @@ public class UserInterestController {
     public void update(@PathParam("idUser") int idUser, List<UserInterest> userinterest) throws ClassNotFoundException {        
         try {
             UserInterestDAO userInterestDAO = new UserInterestDAO();
-            userInterestDAO.update(idUser, userinterest);
-            //return Response.status(Response.Status.OK).build();
+            userInterestDAO.update(idUser, userinterest);            
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(UserInterestController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }

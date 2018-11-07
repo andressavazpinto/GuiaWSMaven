@@ -98,7 +98,7 @@ public class ConnectGuidesController {
                 ConnectGuides aux = connectGuidesDAO.register(c);
                 return aux;
             } catch(ClassNotFoundException e) {
-                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
                 throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
             }
         }
@@ -198,8 +198,7 @@ public class ConnectGuidesController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)    
     @Path("reject")
-    public void reject(ConnectGuides cg) throws ClassNotFoundException {
-        
+    public void reject(ConnectGuides cg) throws ClassNotFoundException {        
         //ConnectGuides cg = new ConnectGuides(0, to.getIdUser1(), to.getIdUser2(), null);       
         
         try {            
@@ -220,18 +219,5 @@ public class ConnectGuidesController {
             Logger.getLogger(ConnectGuidesController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
-    
-    /*@PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{idConnectGuides}")
-    public void desactiveChat(ConnectGuides connectGuides) throws ClassNotFoundException {
-        try {
-            ConnectGuidesDAO connectGuidesDAO = new ConnectGuidesDAO();
-            connectGuidesDAO.update(connectGuides);
-        } catch (SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }
-    }*/
+    }    
 }

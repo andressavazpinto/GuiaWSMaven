@@ -56,7 +56,7 @@ public class ChatController {
             ChatDAO chatDAO = new ChatDAO();           
             return chatDAO.read(id);
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -78,8 +78,7 @@ public class ChatController {
     }
     
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)    
     //@Path("")
     public void update(Chat chat) throws ClassNotFoundException {        
         try {

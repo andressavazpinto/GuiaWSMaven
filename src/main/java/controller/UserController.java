@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response;
 import model.Search;
 import model.User;
 import dao.SearchDAO;
+import model.Grade;
 import util.StatusSearch;
 
 /**
@@ -34,8 +35,7 @@ import util.StatusSearch;
 public class UserController {        
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)   
-    //@Path("")
+    @Produces(MediaType.APPLICATION_JSON)       
     public List<User> list() throws ClassNotFoundException {                     
         try {
             UserDAO userDAO = new UserDAO();
@@ -59,9 +59,21 @@ public class UserController {
         }        
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("score/{id}")
+    public Double getScore(@PathParam("id") int id) throws ClassNotFoundException {        
+        try {
+            UserDAO userDAO = new UserDAO();
+            return userDAO.getScore(id);
+        } catch(SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
+    
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    //@Path("")
+    @Consumes(MediaType.APPLICATION_JSON)    
     public int create(User user) throws ClassNotFoundException {
         int aux = -1;
         try {
@@ -74,8 +86,7 @@ public class UserController {
             search.setIdUser(aux);
             searchDAO.register(search);
             
-            return aux;
-            //return Response.status(Response.Status.OK).build();
+            return aux;            
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -84,13 +95,11 @@ public class UserController {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    //@Path("")
+    @Produces(MediaType.APPLICATION_JSON)    
     public User update(User user) throws ClassNotFoundException {        
         try {
             UserDAO userDAO = new UserDAO();
-            return userDAO.update(user);
-            //return Response.status(Response.Status.OK).build();
+            return userDAO.update(user);            
         } catch(SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -110,6 +119,33 @@ public class UserController {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)    
+    @Path("score/{id}")
+    public void updateScore(@PathParam("id") int idUser, Grade grade) throws ClassNotFoundException {
+        User u;
+        double aux;
+        double score;
+        
+        try {
+            UserDAO userDAO = new UserDAO();
+            u = userDAO.read(idUser);            
+                        
+            score = u.getScore();
+            
+            if(score == 0.0)
+                aux = grade.getGrade();
+            else
+                aux = (score + grade.getGrade()) / 2;            
+            
+            UserDAO userDAO2 = new UserDAO();
+            userDAO2.updateScore(idUser, aux);
+        } catch(SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }        
     
     @DELETE       
     @Path("{id}")

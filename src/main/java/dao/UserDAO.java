@@ -40,7 +40,7 @@ public class UserDAO {
             stmt.setString(4, user.getEmail());
             stmt.setString(5, user.getPassword());
             stmt.setInt(6, user.getIdLocalization());
-            stmt.setString(7, user.getStatusAccount().toString());
+            stmt.setString(7, user.getStatusAccount().toString());            
             
             stmt.executeUpdate();                        
             
@@ -171,6 +171,30 @@ public class UserDAO {
         return null;
     }
     
+    public double getScore(int id) throws SQLException, ClassNotFoundException {
+        String sqlQuery = "SELECT score FROM user WHERE idUser = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                return rs.getDouble("score");
+            }            
+        } catch(SQLException e) {
+            throw e;
+        }
+        finally {
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }      
+        return -1;
+    }
+    
     public List<User> list() throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM user ORDER by idUser";       
         PreparedStatement stmt = null;
@@ -194,13 +218,7 @@ public class UserDAO {
             try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
             try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
             try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
-        }
-        
-    /*    finally {
-    DbUtils.closeQuietly(rs);
-    DbUtils.closeQuietly(ps);
-    DbUtils.closeQuietly(conn);
-}*/
+        }        
     }
     
     private User parser(ResultSet rs) throws SQLException {
@@ -214,6 +232,7 @@ public class UserDAO {
         u.setPassword(rs.getString("password"));
         u.setIdLocalization(rs.getInt("id_localization"));        
         u.setStatusAccount(StatusUser.valueOf(rs.getString("statusAccount")));
+        u.setScore(rs.getDouble("score"));
         
         return u;
     }
@@ -290,6 +309,29 @@ public class UserDAO {
         }
         return false;
     }    
+    
+    public void updateScore(int idUser, double score) throws SQLException, ClassNotFoundException {
+        String sqlQuery = "UPDATE user SET score = ? WHERE idUser = ?;";
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);
+            
+            stmt.setDouble(1, score);               
+            stmt.setInt(2, idUser);
+           
+            stmt.executeUpdate();            
+               
+            this.connection.commit();
+            
+        } catch(SQLException e) {
+            this.connection.rollback();
+            throw e;
+        }
+        finally {            
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        } 
+    }
     
     /*public boolean disable(int id) {
         String sqlQuery = "UPDATE user SET statusAccount='' "

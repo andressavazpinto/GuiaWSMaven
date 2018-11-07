@@ -36,7 +36,7 @@ public class LocalizationController {
             LocalizationDAO localizationDAO = new LocalizationDAO();
             return localizationDAO.list();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LocalizationController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }        
     }
@@ -63,21 +63,20 @@ public class LocalizationController {
             return localizationDAO.register(localization);
             //return Response.status(Response.Status.OK).build();
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LocalizationController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
     
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)   
     //@Path("")
     public void update(Localization localization) throws ClassNotFoundException {        
         try {
             LocalizationDAO localizationDAO = new LocalizationDAO();
             localizationDAO.update(localization);            
         } catch(SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LocalizationController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }   
     }
