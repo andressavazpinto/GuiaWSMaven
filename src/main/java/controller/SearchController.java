@@ -45,8 +45,7 @@ public class SearchController {
     }    
     
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    //@Path("")
+    @Consumes(MediaType.APPLICATION_JSON)   
     public void create(Search search) throws ClassNotFoundException {
         try {
             SearchDAO searchDAO = new SearchDAO();
@@ -58,8 +57,7 @@ public class SearchController {
     }
     
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)    
-    //@Path("")
+    @Consumes(MediaType.APPLICATION_JSON)        
     public void update(Search search) throws ClassNotFoundException {        
         try {
             SearchDAO searchDAO = new SearchDAO();

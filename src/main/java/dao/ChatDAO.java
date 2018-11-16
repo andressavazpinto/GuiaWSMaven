@@ -82,7 +82,7 @@ public class ChatDAO {
         }
     }
     
-    public Chat read(int id) throws SQLException, ClassNotFoundException {
+    public Chat read(int idUser) throws SQLException, ClassNotFoundException {
         String sqlQuery = "SELECT * FROM chat WHERE status = ? AND (id_user1 = ? OR id_user2 = ?);";
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -90,8 +90,32 @@ public class ChatDAO {
         try {
             stmt = this.connection.getConnection().prepareStatement(sqlQuery);            
             stmt.setString(1, "Active");
-            stmt.setInt(2, id);
-            stmt.setInt(3, id);
+            stmt.setInt(2, idUser);
+            stmt.setInt(3, idUser);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                return parser(rs);
+            }            
+        } catch(SQLException e) {
+            throw e;
+        }
+        finally {            
+            try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { connection.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
+        return null;
+    }
+    
+    public Chat readChat(int idChat) throws SQLException, ClassNotFoundException {
+        String sqlQuery = "SELECT * FROM chat WHERE idChat = ?;";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = this.connection.getConnection().prepareStatement(sqlQuery);                        
+            stmt.setInt(1, idChat);            
             rs = stmt.executeQuery();
             
             if(rs.next()) {

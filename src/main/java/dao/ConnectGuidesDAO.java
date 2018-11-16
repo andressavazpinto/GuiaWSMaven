@@ -119,7 +119,8 @@ public class ConnectGuidesDAO {
             
             stmt.executeUpdate();
             
-            this.connection.commit();             
+            this.connection.commit();
+            System.out.println("ConnectGuides deleted: " + id);
             
         } catch(SQLException e) {
             this.connection.rollback();

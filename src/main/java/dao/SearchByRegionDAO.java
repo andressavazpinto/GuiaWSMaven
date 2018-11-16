@@ -27,7 +27,7 @@ public class SearchByRegionDAO {
     }  
     
     public List<SearchByRegion> getRegions(int id) throws SQLException {
-        String sqlQuery = "SELECT localization.city, localization.country, user.idUser, user.name, search.statusSearch "
+        String sqlQuery = "SELECT localization.city, localization.country, user.idUser, user.name, user.score, search.statusSearch "
                 + "FROM localization, user, search WHERE ("
                 + " localization.idLocalization = user.id_localization and user.idUser = search.id_user "
                 + "AND id_user != ?) ORDER BY localization.country";                
@@ -99,7 +99,8 @@ public class SearchByRegionDAO {
         s.setIdUser(rs.getInt("idUser"));
         s.setName(rs.getString("name"));        
         s.setStatusSearch(StatusSearch.valueOf(rs.getString("statusSearch")));
-
+        s.setScore(rs.getDouble("score"));
+        
         return s;
     }
 }

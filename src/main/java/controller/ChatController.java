@@ -24,7 +24,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.Chat;
 import model.ConnectGuides;
-import model.Search;
 import to.ChatConnectTO;
 import util.StatusSearch;
 
@@ -50,11 +49,24 @@ public class ChatController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public Chat get(@PathParam("id") int id) throws ClassNotFoundException {        
+    @Path("{idUser}")
+    public Chat get(@PathParam("idUser") int idUser) throws ClassNotFoundException {        
         try {
             ChatDAO chatDAO = new ChatDAO();           
-            return chatDAO.read(id);
+            return chatDAO.read(idUser);
+        } catch(SQLException e) {
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }        
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("idchat/{idChat}")
+    public Chat getChat(@PathParam("idChat") int idChat) throws ClassNotFoundException {        
+        try {
+            ChatDAO chatDAO = new ChatDAO();           
+            return chatDAO.readChat(idChat);
         } catch(SQLException e) {
             Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, e);
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
