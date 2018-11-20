@@ -15,7 +15,7 @@ public class SearchByRegion {
     private String city, country, name;
     private StatusSearch statusSearch;
     private int idUser;
-    private double score;
+    private double score;    
 
     public SearchByRegion() {
     }
@@ -26,7 +26,7 @@ public class SearchByRegion {
         this.name = name;
         this.statusSearch = statusSearch;
         this.idUser = idUser;
-        this.score = score;
+        this.score = score;        
     }
 
     public String getName() {
@@ -75,10 +75,10 @@ public class SearchByRegion {
 
     public void setScore(double score) {
         this.score = score;
-    }
-    
+    }    
+
     @Override
     public String toString() {
         return "SearchByRegion{" + "city=" + city + ", country=" + country + ", name=" + name + ", statusSearch=" + statusSearch + ", idUser=" + idUser + ", score=" + score + '}';
-    }        
+    }         
 }

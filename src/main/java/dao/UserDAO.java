@@ -71,9 +71,9 @@ public class UserDAO {
                 + "email = ? /*, id_localization = ?*/ WHERE idUser = ?;";
         
         String pass = user.getPassword();
+        System.out.println(pass);
         
-        if(pass == null | ! pass.equals("") | ! pass.matches(" ")) {
-            System.out.println(pass);
+        if(pass == null | pass.equals("") | pass.matches(" ")) {            
             try {
                 PreparedStatement stmt = this.connection.getConnection().prepareStatement(sqlQuery2);
             
@@ -86,7 +86,7 @@ public class UserDAO {
                 stmt.setInt(5, user.getIdUser());
             
                 stmt.executeUpdate();            
-                u = read(user.getIdUser());
+                //u = read(user.getIdUser());
                 this.connection.commit();
             
             } catch(SQLException e) {
@@ -111,7 +111,7 @@ public class UserDAO {
                 stmt.setInt(6, user.getIdUser());
             
                 stmt.executeUpdate();            
-                u = read(user.getIdUser());                        
+                //u = read(user.getIdUser());                  
                 this.connection.commit();
             
             } catch(SQLException e) {

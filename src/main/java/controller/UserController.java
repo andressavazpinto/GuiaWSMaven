@@ -162,7 +162,7 @@ public class UserController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("email/{email}")
+    @Path("check/{email}")
     public boolean checkEmail(@PathParam("email") String email) throws ClassNotFoundException {                
         try {
             UserDAO userDAO = new UserDAO();

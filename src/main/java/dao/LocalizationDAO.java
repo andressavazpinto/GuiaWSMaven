@@ -27,7 +27,7 @@ public class LocalizationDAO {
     
     public int register(Localization localization) throws SQLException, ClassNotFoundException {
         int id=-1;
-        String sqlQuery = "INSERT INTO localization (latitude, longitude, city, uf, country)"
+        String sqlQuery = "INSERT INTO localization (latitude, longitude, city, area, country)"
                 + " VALUES (?, ?, ?, ?, ?);";
         String sqlQuery2 = "SELECT LAST_INSERT_ID() AS 'aux';"; //retornar o id da localização inserida
                 
@@ -36,7 +36,7 @@ public class LocalizationDAO {
             stmt.setDouble(1, localization.getLatitude());
             stmt.setDouble(2, localization.getLongitude());
             stmt.setString(3, localization.getCity());
-            stmt.setString(4, localization.getUf());
+            stmt.setString(4, localization.getArea());
             stmt.setString(5, localization.getCountry());            
             
             stmt.executeUpdate();                                    
@@ -60,7 +60,7 @@ public class LocalizationDAO {
     }
     
     public void update(Localization localization) throws SQLException {        
-        String sqlQuery = "UPDATE localization SET latitude = ?, longitude = ?, city = ?, uf = ?,"
+        String sqlQuery = "UPDATE localization SET latitude = ?, longitude = ?, city = ?, area = ?,"
                 + "country = ? WHERE idLocalization = ?;";
         
         try {
@@ -68,7 +68,7 @@ public class LocalizationDAO {
             stmt.setDouble(1, localization.getLatitude());
             stmt.setDouble(2, localization.getLongitude());
             stmt.setString(3, localization.getCity());
-            stmt.setString(4, localization.getUf());
+            stmt.setString(4, localization.getArea());
             stmt.setString(5, localization.getCountry());
             stmt.setInt(6, localization.getIdLocalization());
             stmt.executeUpdate();            
@@ -141,7 +141,7 @@ public class LocalizationDAO {
         l.setLatitude(rs.getDouble("latitude"));
         l.setLongitude(rs.getDouble("longitude"));
         l.setCity(rs.getString("city"));
-        l.setUf(rs.getString("uf"));
+        l.setArea(rs.getString("area"));
         l.setCountry(rs.getString("country"));       
         
         return l;
